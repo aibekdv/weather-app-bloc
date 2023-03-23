@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'screens/screens.dart';
+import 'package:get_it/get_it.dart';
+import 'package:weather_app/bloc/weather_bloc.dart';
+import 'app.dart';
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Weather app',
-      home: HomeScreen(),
-    );
-  }
+void main() {
+  // get instance for hourly and current widgets
+  final bloc = WeatherBloc();
+  GetIt.I.registerSingleton<WeatherBloc>(bloc);
+  runApp(MyApp());
 }

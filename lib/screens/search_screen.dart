@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -49,7 +50,14 @@ class _SearchScreenState extends State<SearchScreen> {
                           height: 50,
                           child: IconButton(
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.leftToRightWithFade,
+                                  duration: const Duration(milliseconds: 500),
+                                  child: const Text("Hello"),
+                                ),
+                              );
                             },
                             splashRadius: 25,
                             icon: const Icon(

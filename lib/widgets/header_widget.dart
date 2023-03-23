@@ -3,8 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:weather_app/screens/screens.dart';
 
 class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({super.key, required this.city});
-  final String city;
+  const HeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +31,7 @@ class HeaderWidget extends StatelessWidget {
                 context,
                 PageTransition(
                   type: PageTransitionType.rightToLeftWithFade,
+                  duration: const Duration(milliseconds: 500),
                   child: const SearchScreen(),
                 ),
               );
