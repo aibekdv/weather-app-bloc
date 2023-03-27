@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'astro.dart';
 import 'day.dart';
 import 'hour.dart';
@@ -22,7 +24,12 @@ class Forecastday {
             : Astro.fromJson(json['astro'] as Map<String, dynamic>),
         hour: (json['hour'] as List<dynamic>?)
             ?.map((e) => Hour.fromJson(e as Map<String, dynamic>))
-            .toList(),
+            .toList()
+            .sublist(
+              int.parse(
+                DateFormat("H").format(DateTime.now()),
+              ),
+            ),
       );
 
   Map<String, dynamic> toJson() => {

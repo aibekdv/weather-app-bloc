@@ -21,14 +21,6 @@ class _HourlyWidgetState extends State<HourlyWidget> {
     DateFormat("H").format(DateTime.now()),
   );
 
-  List<Hour> hourlyData = [];
-
-  @override
-  void initState() {
-    hourlyData = widget.hourly.sublist(currentTimeIdx);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,7 +54,7 @@ class _HourlyWidgetState extends State<HourlyWidget> {
         clipBehavior: Clip.antiAlias,
         addAutomaticKeepAlives: true,
         dragStartBehavior: DragStartBehavior.down,
-        itemCount: hourlyData.length,
+        itemCount: widget.hourly.length,
         itemBuilder: (context, index) {
           return BlocBuilder<WeatherBloc, WeatherState>(
             bloc: widget.bloc,
@@ -93,7 +85,7 @@ class _HourlyWidgetState extends State<HourlyWidget> {
                       Text(
                         DateFormat("jm").format(
                           DateTime.fromMillisecondsSinceEpoch(
-                            hourlyData[index].timeEpoch! * 1000,
+                            widget.hourly[index].timeEpoch! * 1000,
                           ),
                         ),
                         style: TextStyle(
@@ -105,13 +97,13 @@ class _HourlyWidgetState extends State<HourlyWidget> {
                         ),
                       ),
                       Image.network(
-                        "https:${hourlyData[index].condition!.icon.toString()}",
+                        "https:${widget.hourly[index].condition!.icon.toString()}",
                         width: 60,
                         alignment: Alignment.center,
                         fit: BoxFit.cover,
                       ),
                       Text(
-                        "${hourlyData[index].tempC?.round()}°",
+                        "${widget.hourly[index].tempC?.round()}°",
                         style: TextStyle(
                           color: index == hourlyIndex
                               ? Colors.white

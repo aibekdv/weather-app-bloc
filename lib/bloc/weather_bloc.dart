@@ -37,16 +37,20 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
       if (event.isLocation) {
         await getLocate.getLocation();
-        location ??= getLocate.path;
-        await prefs.setString('location', getLocate.path);
+        if (getLocate.path.isNotEmpty) {
+          location ??= getLocate.path;
+          await prefs.setString('location', getLocate.path);
+        }
         // Loading state
         emit(WeatherLoadingState());
       }
+      final isLocateChange =
+          location == null || getLocate.path.isEmpty || location.isEmpty;
 
       debugPrint("Location: $location");
 
       // Condition for function apiUrl's param
-      final isLocate = location == null ? apiUrl() : apiUrl(q: location);
+      final isLocate = isLocateChange ? apiUrl() : apiUrl(q: location);
       // State loading
       // emit(WeatherLoadingState());
       // Get data from Api
