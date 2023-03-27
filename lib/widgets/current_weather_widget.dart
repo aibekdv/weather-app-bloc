@@ -149,8 +149,8 @@ class CurrentWeather extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: hourData[hourIndex].condition!.text!.length > 12
-                        ? "${hourData[hourIndex].condition!.text!.substring(1, 12)}..."
+                    text: hourData[hourIndex].condition!.text!.length > 8
+                        ? "${hourData[hourIndex].condition!.text!.substring(0, 8)}..."
                         : hourData[hourIndex].condition!.text!,
                     style: const TextStyle(
                       color: Color.fromRGBO(250, 253, 116, 1),

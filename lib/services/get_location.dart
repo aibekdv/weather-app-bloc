@@ -30,7 +30,9 @@ class GetLocation {
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.low,
     ).then(
-      (value) => {path = "${value.latitude}, ${value.longitude}"},
+      (value) => {
+        path = "${value.latitude}, ${value.longitude}",
+      },
     );
   }
 

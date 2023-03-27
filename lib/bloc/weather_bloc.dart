@@ -29,14 +29,15 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       if (state is! WeatherLoadedState) {
         emit(WeatherLoadingState());
       }
+
       // Obtain shared preferences.
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       // Try reading data from the 'action' key. If it doesn't exist, returns null.
-      final String? location = prefs.getString('location');
+      String? location = prefs.getString('location');
 
       if (event.isLocation) {
         await getLocate.getLocation();
-        // Save an String value to 'action' key.
+        location ??= getLocate.path;
         await prefs.setString('location', getLocate.path);
         // Loading state
         emit(WeatherLoadingState());
