@@ -35,10 +35,9 @@ dependencies:
   flutter_bloc: ^8.1.2
   geocoding: ^2.1.0
   geolocator: ^9.0.2
-  get_it: ^7.2.0
   http: ^0.13.5
   intl: ^0.18.0
-  page_transition: ^2.0.9
+  shared_preferences: ^2.0.20
 
 dev_dependencies:
   flutter_lints: ^2.0.0

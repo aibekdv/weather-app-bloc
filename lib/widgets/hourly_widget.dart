@@ -1,14 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/bloc/weather_bloc.dart';
-import 'package:weather_app/models/hour.dart';
+
+import '../models/weather/hour.dart';
 
 class HourlyWidget extends StatefulWidget {
-  const HourlyWidget({super.key, required this.hourly});
+  const HourlyWidget({super.key, required this.hourly, required this.bloc});
   final List<Hour> hourly;
+  final WeatherBloc bloc;
 
   @override
   State<HourlyWidget> createState() => _HourlyWidgetState();
@@ -19,7 +20,6 @@ class _HourlyWidgetState extends State<HourlyWidget> {
   final int currentTimeIdx = int.parse(
     DateFormat("H").format(DateTime.now()),
   );
-  // final WeatherBloc bloc = GetIt.I<WeatherBloc>();
 
   List<Hour> hourlyData = [];
 
@@ -27,12 +27,6 @@ class _HourlyWidgetState extends State<HourlyWidget> {
   void initState() {
     hourlyData = widget.hourly.sublist(currentTimeIdx);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    GetIt.I<WeatherBloc>().close();
-    super.dispose();
   }
 
   @override
@@ -71,14 +65,14 @@ class _HourlyWidgetState extends State<HourlyWidget> {
         itemCount: hourlyData.length,
         itemBuilder: (context, index) {
           return BlocBuilder<WeatherBloc, WeatherState>(
-            bloc: GetIt.I<WeatherBloc>(),
+            bloc: widget.bloc,
             builder: (context, state) {
               if (state is HourlyIndexState) {
                 hourlyIndex = state.hourIndex;
               }
               return GestureDetector(
                 onTap: () {
-                  GetIt.I<WeatherBloc>().add(
+                  widget.bloc.add(
                     ChangeHourlyIndexEvent(index),
                   );
                 },
@@ -89,7 +83,7 @@ class _HourlyWidgetState extends State<HourlyWidget> {
                   decoration: BoxDecoration(
                     color: index == hourlyIndex
                         ? const Color(0xff0052EF)
-                        : const Color(0xff00B9E0),
+                        : const Color(0xff1AB5ED),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(

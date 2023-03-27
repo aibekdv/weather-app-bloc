@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/bloc/weather_bloc.dart';
-import 'package:weather_app/models/hour.dart';
+import 'package:weather_app/models/weather/hour.dart';
 
 class CurrentWeatherWidget extends StatefulWidget {
   const CurrentWeatherWidget({
     super.key,
     required this.currentWeather,
     required this.city,
+    required this.bloc,
   });
 
   final List<Hour> currentWeather;
   final String city;
+  final WeatherBloc bloc;
 
   @override
   State<CurrentWeatherWidget> createState() => _CurrentWeatherWidgetState();
@@ -38,12 +39,11 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
     // get date time
     final String date = DateFormat("MMMMd").format(DateTime.now()).toString();
     final String dateHour = DateFormat("jm").format(DateTime.now()).toString();
-    final bool isLength = hourData[hourIndex].condition!.text!.length > 13;
 
     return Container(
       padding: const EdgeInsets.only(bottom: 30, left: 15, right: 15),
       child: BlocBuilder<WeatherBloc, WeatherState>(
-        bloc: GetIt.I<WeatherBloc>(),
+        bloc: widget.bloc,
         builder: (context, state) {
           if (state is HourlyIndexState) {
             hourIndex = state.hourIndex;
@@ -54,7 +54,6 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
             dateHour: dateHour,
             hourData: hourData,
             hourIndex: hourIndex,
-            isLength: isLength,
           );
         },
       ),
@@ -70,7 +69,6 @@ class CurrentWeather extends StatelessWidget {
     required this.dateHour,
     required this.hourData,
     required this.hourIndex,
-    required this.isLength,
   });
 
   final CurrentWeatherWidget widget;
@@ -78,7 +76,6 @@ class CurrentWeather extends StatelessWidget {
   final String dateHour;
   final List<Hour> hourData;
   final int hourIndex;
-  final bool isLength;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +83,7 @@ class CurrentWeather extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -151,9 +149,9 @@ class CurrentWeather extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: isLength
-                        ? "${hourData[hourIndex].condition!.text!.substring(0, 13)}..."
-                        : widget.currentWeather[hourIndex].condition!.text,
+                    text: hourData[hourIndex].condition!.text!.length > 12
+                        ? "${hourData[hourIndex].condition!.text!.substring(1, 12)}..."
+                        : hourData[hourIndex].condition!.text!,
                     style: const TextStyle(
                       color: Color.fromRGBO(250, 253, 116, 1),
                       fontSize: 14,

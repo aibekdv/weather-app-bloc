@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'bloc/weather_bloc.dart';
-import 'screens/screens.dart';
+import 'package:weather_app/utils/routes.dart';
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
-  final WeatherBloc bloc = WeatherBloc();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Weather app',
-      home: HomeScreen(),
+      routes: appRoutes,
     );
   }
 }

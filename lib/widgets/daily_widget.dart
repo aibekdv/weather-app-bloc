@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:weather_app/models/weather/forecastday.dart';
 
-class DailyWidget extends StatelessWidget {
-  const DailyWidget({super.key});
+class DailyWidget extends StatefulWidget {
+  const DailyWidget({super.key, required this.days});
+  final List<Forecastday> days;
+
+  @override
+  State<DailyWidget> createState() => _DailyWidgetState();
+}
+
+class _DailyWidgetState extends State<DailyWidget> {
+  List<Forecastday> daysList = [];
+
+  @override
+  void initState() {
+    daysList = widget.days.sublist(1);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +63,17 @@ class DailyWidget extends StatelessWidget {
   Widget dailyList() {
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      itemCount: 7,
+      itemCount: daysList.length,
       itemBuilder: (context, index) {
+        String weekDay = DateFormat("MMMMd").format(
+          DateTime.fromMillisecondsSinceEpoch(
+              daysList[index].dateEpoch! * 1000),
+        );
+
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 15),
           margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
@@ -60,16 +81,22 @@ class DailyWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                    "Wednesday",
-                    style: TextStyle(
+                    weekDay,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                     ),
                   ),
-                  Icon(Icons.sunny),
+                  SizedBox(
+                    width: 32,
+                    height: 32,
+                    child: Image.network(
+                      "http:${daysList[index].day!.condition!.icon}",
+                    ),
+                  ),
                   Text(
-                    "14° / 16°",
-                    style: TextStyle(
+                    "${daysList[index].day!.mintempC?.toInt()}° / ${widget.days[index].day!.maxtempC?.toInt()}°",
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                     ),

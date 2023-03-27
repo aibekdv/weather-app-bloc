@@ -1,48 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:weather_app/screens/screens.dart';
+import 'package:weather_app/bloc/weather_bloc.dart';
 
 class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({super.key});
+  const HeaderWidget({super.key, required this.bloc});
+
+  final WeatherBloc bloc;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        GestureDetector(
-          onTap: () {},
-          child: const SizedBox(
-            width: 55,
-            height: 55,
-            child: Icon(
-              Icons.navigation_sharp,
-              color: Colors.white,
-              size: 35,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 55,
-          height: 55,
-          child: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.rightToLeftWithFade,
-                  duration: const Duration(milliseconds: 500),
-                  child: const SearchScreen(),
-                ),
-              );
+        Container(
+          margin: const EdgeInsets.only(right: 15, top: 10),
+          child: InkWell(
+            onTap: () async {
+              bloc.add(FetchWeatherDataEvent(isLocation: true));
             },
-            padding: EdgeInsets.zero,
-            alignment: Alignment.center,
-            tooltip: "Search",
-            iconSize: 35,
-            icon: const Icon(
-              Icons.search_sharp,
-              color: Colors.white,
+            child: SizedBox(
+              width: 35,
+              height: 35,
+              child: Image.asset("assets/images/gps.png"),
             ),
           ),
         ),
